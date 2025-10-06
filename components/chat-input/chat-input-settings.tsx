@@ -19,10 +19,21 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import { Switch } from "../ui/switch";
+import { motion } from "motion/react";
+import { useChatInputActions, useChatInputStore } from "@/lib/store";
+import { cn } from "@/lib/utils";
 
 function ChatInputSettings() {
+  const { setReasoning, setWebBrowsing } = useChatInputActions();
+  const { resoning, webBrowsing, expanded } = useChatInputStore();
+
   return (
-    <div onClick={(e) => e.stopPropagation()}>
+    <motion.div
+      layout
+      initial={false}
+      className={cn(expanded ? "flex-1 basis-1/3" : "flex-none")}
+      onClick={(e) => e.stopPropagation()}
+    >
       <ResponsivePopover
         trigger={
           <Button variant="outline" size={"icon"} className="rounded-full">
@@ -41,15 +52,15 @@ function ChatInputSettings() {
                 <Paperclip />
                 <span>Upload file</span>
               </CommandItem>
-              <CommandItem>
+              <CommandItem onSelect={() => setReasoning()}>
                 <History />
                 <span>Reasoning</span>
-                <Switch className="ml-auto" />
+                <Switch checked={resoning} className="ml-auto" />
               </CommandItem>
-              <CommandItem>
+              <CommandItem onSelect={() => setWebBrowsing()}>
                 <Globe />
                 <span>Web browsing</span>
-                <Switch className="ml-auto" />
+                <Switch checked={webBrowsing} className="ml-auto" />
               </CommandItem>
             </CommandGroup>
             <CommandSeparator />
@@ -63,7 +74,7 @@ function ChatInputSettings() {
           </CommandList>
         </Command>
       </ResponsivePopover>
-    </div>
+    </motion.div>
   );
 }
 

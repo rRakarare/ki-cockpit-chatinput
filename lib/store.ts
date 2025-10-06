@@ -12,8 +12,12 @@ interface FileWithMetadata {
 
 interface State {
   files: FileWithMetadata[];
+  resoning: boolean;
+  webBrowsing: boolean;
 
   actions: {
+    setReasoning: (value?: boolean) => void;
+    setWebBrowsing: (value?: boolean) => void;
     addFile: (file: File) => void;
     addFiles: (files: File[]) => void;
     removeFile: (id: string) => void;
@@ -22,12 +26,30 @@ interface State {
 
 const initialState: Omit<State, "actions"> = {
   files: [],
+  resoning: false,
+  webBrowsing: false,
+};
+
+const isExpanded = (state: Omit<State, "actions">): boolean => {
+  return (
+    state.files.length > 0 ||
+    state.resoning !== initialState.resoning ||
+    state.webBrowsing !== initialState.webBrowsing
+  );
 };
 
 const useStore = create<State>()((set, get) => ({
   ...initialState,
 
   actions: {
+    setReasoning: (value) =>
+      set((state) => ({
+        resoning: value !== undefined ? value : !state.resoning,
+      })),
+    setWebBrowsing: (value) =>
+      set((state) => ({
+        webBrowsing: value !== undefined ? value : !state.webBrowsing,
+      })),
     addFile: (file: File) =>
       set((state) => ({
         files: [
@@ -73,6 +95,9 @@ export const useChatInputStore = () =>
   useStore(
     useShallow((state) => ({
       files: state.files,
+      resoning: state.resoning,
+      webBrowsing: state.webBrowsing,
+      expanded: isExpanded(state),
     }))
   );
 
