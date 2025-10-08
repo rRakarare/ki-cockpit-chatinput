@@ -6,14 +6,10 @@ import { useChatInputStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 
 function ChatInputSend() {
-  const { expanded } = useChatInputStore();
+  // const { expanded } = useChatInputStore();
 
   return (
-    <motion.div
-      layout
-      initial={false}
-      className={cn(expanded ? "flex-1 basis-1/3" : "flex-none")}
-    >
+    <motion.div layout="position" className={cn("ml-auto")}>
       <AnimateIcon animateOnHover>
         <Button size={"icon"} className="cursor-pointer rounded-full">
           <ArrowUp />

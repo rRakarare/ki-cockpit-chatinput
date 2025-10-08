@@ -25,15 +25,10 @@ import { cn } from "@/lib/utils";
 
 function ChatInputSettings() {
   const { setReasoning, setWebBrowsing } = useChatInputActions();
-  const { resoning, webBrowsing, expanded } = useChatInputStore();
+  const { resoning, webBrowsing } = useChatInputStore();
 
   return (
-    <motion.div
-      layout
-      initial={false}
-      className={cn(expanded ? "flex-1 basis-1/3" : "flex-none")}
-      onClick={(e) => e.stopPropagation()}
-    >
+    <motion.div layout="position" onClick={(e) => e.stopPropagation()}>
       <ResponsivePopover
         trigger={
           <Button variant="outline" size={"icon"} className="rounded-full">
