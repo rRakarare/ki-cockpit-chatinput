@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { Textarea } from "../ui/textarea";
+import { TextareaAutosize } from "../ui/textarea";
 import { cn } from "@/lib/utils";
 import { useChatInputStore } from "@/lib/store";
 
@@ -8,12 +8,14 @@ function ChatInputMessage() {
 
   return (
     <motion.div
-      layout
-      className={cn(expanded ? "flex-1 basis-full order-first" : "flex-1")}
+      layout="position"
+      className={cn("", expanded && "col-span-3 col-start-1 row-start-1")}
     >
-      <Textarea
+      <TextareaAutosize
+        className="resize-none h-9"
+        minRows={1}
+        maxRows={9}
         placeholder="Was möchtest du wissen?"
-        className="resize-none min-h-8 max-h-full px-1"
       />
     </motion.div>
   );

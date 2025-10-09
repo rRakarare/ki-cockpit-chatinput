@@ -19,16 +19,15 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import { Switch } from "../ui/switch";
-import { motion } from "motion/react";
+
 import { useChatInputActions, useChatInputStore } from "@/lib/store";
-import { cn } from "@/lib/utils";
 
 function ChatInputSettings() {
   const { setReasoning, setWebBrowsing } = useChatInputActions();
   const { resoning, webBrowsing } = useChatInputStore();
 
   return (
-    <motion.div layout="position" onClick={(e) => e.stopPropagation()}>
+    <div onClick={(e) => e.stopPropagation()}>
       <ResponsivePopover
         trigger={
           <Button variant="outline" size={"icon"} className="rounded-full">
@@ -69,7 +68,7 @@ function ChatInputSettings() {
           </CommandList>
         </Command>
       </ResponsivePopover>
-    </motion.div>
+    </div>
   );
 }
 

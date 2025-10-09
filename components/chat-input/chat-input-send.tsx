@@ -9,7 +9,7 @@ function ChatInputSend() {
   // const { expanded } = useChatInputStore();
 
   return (
-    <motion.div layout="position" className={cn("ml-auto")}>
+    <motion.div layout="position" className="col-start-3">
       <AnimateIcon animateOnHover>
         <Button size={"icon"} className="cursor-pointer rounded-full">
           <ArrowUp />
