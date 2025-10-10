@@ -1,18 +1,35 @@
-import { motion } from "motion/react";
-import { cn } from "@/lib/utils";
-import { useChatInputStore } from "@/lib/store";
+import { useRef } from "react";
+import { CommandItem } from "../ui/command";
+import { Paperclip } from "lucide-react";
+import { useChatInputActions } from "@/lib/store";
 
 function ChatInputFileUpload() {
-  const { expanded } = useChatInputStore();
+  const { addFiles } = useChatInputActions();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const files = e.target.files ? Array.from(e.target.files) : [];
+    addFiles(files);
+  };
+
+  const handleClick = (): void => {
+    fileInputRef.current?.click();
+  };
 
   return (
-    <motion.div
-      layout="position"
-      layoutDependency={expanded}
-      className={cn("h-0", expanded && "h-auto")}
-    >
-      FILES
-    </motion.div>
+    <>
+      <input
+        ref={fileInputRef}
+        type="file"
+        multiple
+        onChange={handleFileChange}
+        className="hidden"
+      />
+      <CommandItem onSelect={handleClick}>
+        <Paperclip />
+        <span>Upload file</span>
+      </CommandItem>
+    </>
   );
 }
 

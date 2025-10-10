@@ -46,7 +46,6 @@ export default function ChatInputFileDrop() {
       const files: File[] = e.dataTransfer
         ? Array.from(e.dataTransfer.files)
         : [];
-      console.log("Files dropped:", files);
       addFiles(files);
     };
 
@@ -76,7 +75,7 @@ export default function ChatInputFileDrop() {
       );
       document.body.removeEventListener("drop", handleDrop as EventListener);
     };
-  }, []);
+  }, [addFiles]);
 
   return (
     <Dialog open={isDragging} onOpenChange={setIsDragging}>

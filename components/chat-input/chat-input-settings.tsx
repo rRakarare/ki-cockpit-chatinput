@@ -21,6 +21,7 @@ import {
 import { Switch } from "../ui/switch";
 
 import { useChatInputActions, useChatInputStore } from "@/lib/store";
+import ChatInputFileUpload from "./chat-input-file-upload";
 
 function ChatInputSettings() {
   const { setReasoning, setWebBrowsing } = useChatInputActions();
@@ -42,10 +43,7 @@ function ChatInputSettings() {
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
-              <CommandItem>
-                <Paperclip />
-                <span>Upload file</span>
-              </CommandItem>
+              <ChatInputFileUpload />
               <CommandItem onSelect={() => setReasoning()}>
                 <History />
                 <span>Reasoning</span>

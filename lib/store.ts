@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { useShallow } from "zustand/shallow";
 
-interface FileWithMetadata {
+export interface FileWithMetadata {
   id: string;
   file: File;
   name: string;
@@ -39,7 +39,6 @@ const initialState: Omit<State, "actions"> = {
 
 const isExpanded = (state: Omit<State, "actions">): boolean => {
   return (
-    state.files.length > 0 ||
     state.resoning !== initialState.resoning ||
     state.webBrowsing !== initialState.webBrowsing
   );

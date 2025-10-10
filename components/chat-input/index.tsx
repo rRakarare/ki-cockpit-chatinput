@@ -11,7 +11,9 @@ import ChatInputFiles from "./chat-input-files";
 function ChatInput() {
   return (
     <ChatInputFrame>
-      <ChatInputFiles />
+      <motion.div layout="position">
+        <ChatInputFiles />
+      </motion.div>
       <div
         className="
           grid grid-cols-[auto_minmax(0,_1fr)_auto] grid-rows-[auto_auto] gap-x-4 justify-between items-end"
