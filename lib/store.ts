@@ -10,10 +10,15 @@ interface FileWithMetadata {
   preview: string;
 }
 
+export const models = ["gpt-5", "claude-4.5", "gemini-pro", "custom"] as const;
+
+type Model = (typeof models)[number];
+
 interface State {
   files: FileWithMetadata[];
   resoning: boolean;
   webBrowsing: boolean;
+  model: Model;
 
   actions: {
     setReasoning: (value?: boolean) => void;
@@ -21,6 +26,7 @@ interface State {
     addFile: (file: File) => void;
     addFiles: (files: File[]) => void;
     removeFile: (id: string) => void;
+    setModel: (model: Model) => void;
   };
 }
 
@@ -28,6 +34,7 @@ const initialState: Omit<State, "actions"> = {
   files: [],
   resoning: false,
   webBrowsing: false,
+  model: "gpt-5",
 };
 
 const isExpanded = (state: Omit<State, "actions">): boolean => {
@@ -50,6 +57,7 @@ const useStore = create<State>()((set, get) => ({
       set((state) => ({
         webBrowsing: value !== undefined ? value : !state.webBrowsing,
       })),
+    setModel: (model: Model) => set(() => ({ model })),
     addFile: (file: File) =>
       set((state) => ({
         files: [
@@ -97,6 +105,7 @@ export const useChatInputStore = () =>
       files: state.files,
       resoning: state.resoning,
       webBrowsing: state.webBrowsing,
+      model: state.model,
       expanded: isExpanded(state),
     }))
   );

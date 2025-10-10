@@ -30,7 +30,7 @@ function ChatInputSettings() {
     <div onClick={(e) => e.stopPropagation()}>
       <ResponsivePopover
         trigger={
-          <Button variant="outline" size={"icon"} className="rounded-full">
+          <Button variant="outline" size={"icon"} className="rounded-full z-10">
             <Plus />
           </Button>
         }

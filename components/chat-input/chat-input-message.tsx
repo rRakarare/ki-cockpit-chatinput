@@ -9,6 +9,7 @@ function ChatInputMessage() {
   return (
     <motion.div
       layout="position"
+      layoutDependency={expanded}
       className={cn("", expanded && "col-span-3 col-start-1 row-start-1")}
     >
       <TextareaAutosize
