@@ -1,7 +1,6 @@
 import { motion } from "motion/react";
 import { useChatInputActions, type FileWithMetadata } from "@/lib/store";
 import { Button } from "../ui/button";
-import { Badge } from "../ui/badge";
 import { X } from "lucide-react";
 import {
   ChatInputFileDoc,
@@ -39,6 +38,7 @@ function ChatInputFile({ file }: { file: FileWithMetadata }) {
             case "txt":
               return <ChatInputFileTxt file={file} />;
             case "png":
+            case "jpg":
               return <ChatInputFileImage file={file} />;
 
             default:

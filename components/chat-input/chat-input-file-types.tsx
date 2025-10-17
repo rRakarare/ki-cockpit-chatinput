@@ -1,3 +1,12 @@
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
 import type { FileWithMetadata } from "@/lib/store";
 import { File, FileSpreadsheet, FileText, FileType } from "lucide-react";
 
@@ -51,13 +60,26 @@ export function ChatInputFileTxt({ file }: { file: FileWithMetadata }) {
 
 export function ChatInputFileImage({ file }: { file: FileWithMetadata }) {
   console.log(file);
+
   return (
-    <div className="w-full h-full rounded-md overflow-hidden">
-      <img
-        src={file.preview}
-        alt="Preview"
-        className="w-full h-full object-contain"
-      />
-    </div>
+    <Dialog>
+      <DialogTrigger asChild>
+        <div className="w-full h-full rounded-md overflow-hidden">
+          <img
+            src={file.preview}
+            alt="Preview"
+            className="w-full h-full object-contain"
+          />
+        </div>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogTitle />{" "}
+        <img
+          src={file.preview}
+          alt="Preview"
+          className="w-full h-full object-contain"
+        />
+      </DialogContent>
+    </Dialog>
   );
 }

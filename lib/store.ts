@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { useShallow } from "zustand/shallow";
 import mime from "mime";
 
-export const fileTypes = ["pdf", "png", "txt", "xlsx", "doc"] as const;
+export const fileTypes = ["pdf", "png", "jpg", "txt", "xlsx", "doc"] as const;
 export type FileType = (typeof fileTypes)[number] | "file";
 
 export interface FileWithMetadata {
