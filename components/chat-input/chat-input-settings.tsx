@@ -26,12 +26,11 @@ function ChatInputSettings() {
           <Button
             variant="outline"
             size={"icon"}
-            className={cn(
-              "rounded-full z-10 origin-center",
-              open && "rotate-45",
-            )}
+            className={"rounded-full z-10"}
           >
-            <Plus />
+            <Plus
+              className={cn(" origin-center duration-100", open && "rotate-45")}
+            />
           </Button>
         }
         align="start"
