@@ -1,17 +1,20 @@
 import { create } from "zustand";
 import { useShallow } from "zustand/shallow";
+import mime from "mime";
+
+export const fileTypes = ["pdf", "png", "txt", "xlsx", "doc"] as const;
+export type FileType = (typeof fileTypes)[number] | "file";
 
 export interface FileWithMetadata {
   id: string;
   file: File;
   name: string;
   size: number;
-  type: string;
+  type: FileType;
   preview: string;
 }
 
 export const models = ["gpt-5", "claude-4.5", "gemini-pro", "custom"] as const;
-
 type Model = (typeof models)[number];
 
 interface State {
@@ -23,7 +26,6 @@ interface State {
   actions: {
     setReasoning: (value?: boolean) => void;
     setWebBrowsing: (value?: boolean) => void;
-    addFile: (file: File) => void;
     addFiles: (files: File[]) => void;
     removeFile: (id: string) => void;
     setModel: (model: Model) => void;
@@ -57,32 +59,23 @@ const useStore = create<State>()((set, get) => ({
         webBrowsing: value !== undefined ? value : !state.webBrowsing,
       })),
     setModel: (model: Model) => set(() => ({ model })),
-    addFile: (file: File) =>
-      set((state) => ({
-        files: [
-          ...state.files,
-          {
-            id: crypto.randomUUID(),
-            file,
-            name: file.name,
-            size: file.size,
-            type: file.type,
-            preview: URL.createObjectURL(file),
-          },
-        ],
-      })),
     addFiles: (files: File[]) =>
       set((state) => ({
         files: [
           ...state.files,
-          ...files.map((file) => ({
-            id: crypto.randomUUID(),
-            file,
-            name: file.name,
-            size: file.size,
-            type: file.type,
-            preview: URL.createObjectURL(file),
-          })),
+          ...files.map((file) => {
+            const type = mime.getExtension(file.type) || "";
+            return {
+              id: crypto.randomUUID(),
+              file,
+              name: file.name,
+              size: file.size,
+              type: (fileTypes as readonly string[]).includes(type)
+                ? (type as FileType)
+                : "file",
+              preview: URL.createObjectURL(file),
+            };
+          }),
         ],
       })),
     removeFile: (id: string) =>

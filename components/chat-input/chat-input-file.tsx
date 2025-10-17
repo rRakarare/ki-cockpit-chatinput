@@ -1,8 +1,17 @@
 import { motion } from "motion/react";
 import { useChatInputActions, type FileWithMetadata } from "@/lib/store";
 import { Button } from "../ui/button";
+import { Badge } from "../ui/badge";
+import { X } from "lucide-react";
+import {
+  ChatInputFileDoc,
+  ChatInputFileImage,
+  ChatInputFilePdf,
+  ChatInputFileTxt,
+  ChatInputFileXlsx,
+} from "./chat-input-file-types";
 
-function ChatInputFile({ name, id }: FileWithMetadata) {
+function ChatInputFile({ file }: { file: FileWithMetadata }) {
   const { removeFile } = useChatInputActions();
 
   return (
@@ -10,11 +19,33 @@ function ChatInputFile({ name, id }: FileWithMetadata) {
       transition={{ duration: 0.1 }}
       initial={{ opacity: 0, scale: 0 }}
       animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0 }}
     >
-      <Button onClick={() => removeFile(id)} variant="outline">
-        {name}
-      </Button>
+      <div className="relative group text-sm border max-w-[250px] h-14 justify-between rounded-md hover:bg-accent cursor-pointer">
+        <Button
+          onClick={() => removeFile(file.id)}
+          className="!p-1 h-auto rounded-full absolute -top-2 -right-2 cursor-pointer scale-0 group-hover:scale-100"
+          variant={"outline"}
+        >
+          <X />
+        </Button>
+        {(() => {
+          switch (file.type) {
+            case "pdf":
+              return <ChatInputFilePdf file={file} />;
+            case "xlsx":
+              return <ChatInputFileXlsx file={file} />;
+            case "doc":
+              return <ChatInputFileDoc file={file} />;
+            case "txt":
+              return <ChatInputFileTxt file={file} />;
+            case "png":
+              return <ChatInputFileImage file={file} />;
+
+            default:
+              return null;
+          }
+        })()}
+      </div>
     </motion.div>
   );
 }

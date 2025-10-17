@@ -25,7 +25,7 @@ function ChatInputModel() {
             <ChevronDown />
           </Button>
         }
-        align="start"
+        align="end"
       >
         <Command className="">
           <CommandInput placeholder="Select model or search..." />

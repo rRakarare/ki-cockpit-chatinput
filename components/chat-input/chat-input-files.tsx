@@ -15,7 +15,7 @@ function ChatInputFiles() {
         <div className="flex gap-2 flex-wrap pb-3">
           <AnimatePresence>
             {files.map((file) => (
-              <ChatInputFile key={file.id} {...file} />
+              <ChatInputFile key={file.id} file={file} />
             ))}
           </AnimatePresence>
         </div>

@@ -1,69 +1,56 @@
 "use client";
-import {
-  ArrowRight,
-  Folder,
-  Globe,
-  History,
-  Paperclip,
-  Plus,
-} from "lucide-react";
+import { Plus } from "lucide-react";
 import { ResponsivePopover } from "../responsive-popover";
 import { Button } from "../ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator,
-} from "@/components/ui/command";
-import { Switch } from "../ui/switch";
+import { Command, CommandEmpty, CommandInput } from "@/components/ui/command";
 
-import { useChatInputActions, useChatInputStore } from "@/lib/store";
-import ChatInputFileUpload from "./chat-input-file-upload";
+import ChatInputSettingsKnowledge from "./chat-input-settings-knowledge";
+import ChatInputSettingsMain from "./chat-input-settings-main";
+import { useState } from "react";
+import ChatInputSettingsStyle from "./chat-input-settings-style";
+import { cn } from "@/lib/utils";
+
+export type Tabs = "default" | "knowledge" | "style";
 
 function ChatInputSettings() {
-  const { setReasoning, setWebBrowsing } = useChatInputActions();
-  const { resoning, webBrowsing } = useChatInputStore();
+  const [searchValue, setSearchValue] = useState("");
+  const [tab, setTab] = useState<Tabs>("default");
+  const [open, setOpen] = useState(false);
 
   return (
     <div onClick={(e) => e.stopPropagation()}>
       <ResponsivePopover
+        open={open}
+        onOpenChange={setOpen}
         trigger={
-          <Button variant="outline" size={"icon"} className="rounded-full z-10">
+          <Button
+            variant="outline"
+            size={"icon"}
+            className={cn("rounded-full z-10", open && "rotate-45")}
+          >
             <Plus />
           </Button>
         }
         align="start"
       >
         <Command className="">
-          <CommandInput placeholder="Type a command or search..." />
-
-          <CommandList>
-            <CommandEmpty>No results found.</CommandEmpty>
-            <CommandGroup>
-              <ChatInputFileUpload />
-              <CommandItem onSelect={() => setReasoning()}>
-                <History />
-                <span>Reasoning</span>
-                <Switch checked={resoning} className="ml-auto" />
-              </CommandItem>
-              <CommandItem onSelect={() => setWebBrowsing()}>
-                <Globe />
-                <span>Web browsing</span>
-                <Switch checked={webBrowsing} className="ml-auto" />
-              </CommandItem>
-            </CommandGroup>
-            <CommandSeparator />
-            <CommandGroup>
-              <CommandItem>
-                <Folder />
-                <span>Select project</span>
-                <ArrowRight className="ml-auto" />
-              </CommandItem>
-            </CommandGroup>
-          </CommandList>
+          <CommandInput
+            value={searchValue}
+            onValueChange={(val) => setSearchValue(val)}
+            placeholder="Type a command or search..."
+          />
+          <CommandEmpty>No results found.</CommandEmpty>
+          <ChatInputSettingsMain tab={tab} setTab={setTab} />
+          <ChatInputSettingsKnowledge
+            tab={tab}
+            setTab={setTab}
+            searchValue={searchValue}
+          />
+          <ChatInputSettingsStyle
+            tab={tab}
+            setTab={setTab}
+            searchValue={searchValue}
+          />
         </Command>
       </ResponsivePopover>
     </div>
