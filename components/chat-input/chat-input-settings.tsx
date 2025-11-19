@@ -2,18 +2,18 @@
 import { Plus } from "lucide-react";
 import { ResponsivePopover } from "../responsive-popover";
 import { Button } from "../ui/button";
-import { Command, CommandEmpty, CommandInput } from "@/components/ui/command";
+import { Command, CommandList } from "@/components/ui/command";
 
 import ChatInputSettingsKnowledge from "./chat-input-settings-knowledge";
 import ChatInputSettingsMain from "./chat-input-settings-main";
 import { useState } from "react";
 import ChatInputSettingsStyle from "./chat-input-settings-style";
 import { cn } from "@/lib/utils";
+import ChatInputSettingsReasoning from "./chat-input-settings-reasoning";
 
-export type Tabs = "default" | "knowledge" | "style";
+export type Tabs = "default" | "knowledge" | "style" | "reasoning";
 
 function ChatInputSettings() {
-  const [searchValue, setSearchValue] = useState("");
   const [tab, setTab] = useState<Tabs>("default");
   const [open, setOpen] = useState(false);
 
@@ -36,23 +36,23 @@ function ChatInputSettings() {
         align="start"
       >
         <Command className="">
-          <CommandInput
-            value={searchValue}
-            onValueChange={(val) => setSearchValue(val)}
-            placeholder="Type a command or search..."
-          />
-          <CommandEmpty>No results found.</CommandEmpty>
-          <ChatInputSettingsMain tab={tab} setTab={setTab} />
-          <ChatInputSettingsKnowledge
-            tab={tab}
-            setTab={setTab}
-            searchValue={searchValue}
-          />
-          <ChatInputSettingsStyle
-            tab={tab}
-            setTab={setTab}
-            searchValue={searchValue}
-          />
+          <CommandList>
+            {(() => {
+              switch (tab) {
+                case "default":
+                  return <ChatInputSettingsMain setTab={setTab} />;
+                case "knowledge":
+                  return <ChatInputSettingsKnowledge setTab={setTab} />;
+                case "style":
+                  return <ChatInputSettingsStyle setTab={setTab} />;
+                case "reasoning":
+                  return <ChatInputSettingsReasoning setTab={setTab} />;
+
+                default:
+                  return null;
+              }
+            })()}
+          </CommandList>
         </Command>
       </ResponsivePopover>
     </div>

@@ -12,7 +12,7 @@ function ChatInputFrame({ children }: Props) {
         layout
         initial={false}
         onClick={(e) => e.currentTarget.querySelector("textarea")?.focus()}
-        className="cursor-text overflow-hidden w-full max-w-[700px] px-4 py-3 border rounded-3xl h-auto focus-within:ring hover:ring ring-primary/20 transition-[box-shadow] duration-200"
+        className="relative cursor-text overflow-hidden w-full max-w-[700px] px-4 py-3 border rounded-3xl h-auto focus-within:ring hover:ring ring-primary/20 transition-[box-shadow] duration-200"
       >
         {children}
       </motion.div>

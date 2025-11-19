@@ -13,25 +13,23 @@ import { useChatInputActions, useChatInputStore } from "@/lib/store";
 import ChatInputFileUpload from "./chat-input-file-upload";
 import type { Tabs } from "./chat-input-settings";
 import type { Dispatch, SetStateAction } from "react";
-import { cn } from "@/lib/utils";
 
 interface Props {
-  tab: Tabs;
   setTab: Dispatch<SetStateAction<Tabs>>;
 }
 
-function ChatInputSettingsMain({ tab, setTab }: Props) {
+function ChatInputSettingsMain({ setTab }: Props) {
   const { setReasoning, setWebBrowsing } = useChatInputActions();
-  const { resoning, webBrowsing } = useChatInputStore();
+  const { reasoning, webBrowsing } = useChatInputStore();
 
   return (
-    <CommandList className={cn("hidden", tab === "default" && "inline")}>
+    <CommandList>
       <CommandGroup>
         <ChatInputFileUpload />
-        <CommandItem onSelect={() => setReasoning()}>
+        <CommandItem onSelect={() => setTab("reasoning")}>
           <History />
           <span>Reasoning</span>
-          <Switch checked={resoning} className="ml-auto" />
+          <ArrowRight className="ml-auto" />
         </CommandItem>
         <CommandItem onSelect={() => setWebBrowsing()}>
           <Globe />

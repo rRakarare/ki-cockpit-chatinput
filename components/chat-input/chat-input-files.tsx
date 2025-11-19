@@ -11,6 +11,7 @@ function ChatInputFiles() {
   return (
     <>
       <ChatInputFileDrop />
+
       {hasFiles && (
         <div className="flex gap-2 flex-wrap pb-3">
           <AnimatePresence>

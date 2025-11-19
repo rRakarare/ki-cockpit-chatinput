@@ -1,65 +1,43 @@
 import { create } from "zustand";
 import { useShallow } from "zustand/shallow";
 import mime from "mime";
+import type { StoreState } from "./store-types";
 
-export const fileTypes = ["pdf", "png", "jpg", "txt", "xlsx", "doc"] as const;
-export type FileType = (typeof fileTypes)[number] | "file";
-
-export interface FileWithMetadata {
-  id: string;
-  file: File;
-  name: string;
-  size: number;
-  type: FileType;
-  preview: string;
-}
-
-export const models = ["gpt-5", "claude-4.5", "gemini-pro", "custom"] as const;
-type Model = (typeof models)[number];
-
-interface State {
-  files: FileWithMetadata[];
-  resoning: boolean;
-  webBrowsing: boolean;
-  model: Model;
-
-  actions: {
-    setReasoning: (value?: boolean) => void;
-    setWebBrowsing: (value?: boolean) => void;
-    addFiles: (files: File[]) => void;
-    removeFile: (id: string) => void;
-    setModel: (model: Model) => void;
-  };
-}
-
-const initialState: Omit<State, "actions"> = {
+export const initialState: Omit<StoreState, "actions"> = {
   files: [],
-  resoning: false,
-  webBrowsing: false,
+  reasoning: null,
+  style: null,
+  detailLevel: null,
+  webBrowsing: true,
   model: "gpt-5",
 };
 
-const isExpanded = (state: Omit<State, "actions">): boolean => {
-  return (
-    state.resoning !== initialState.resoning ||
-    state.webBrowsing !== initialState.webBrowsing
-  );
+const isExpanded = (state: Omit<StoreState, "actions">): boolean => {
+  return state.reasoning !== initialState.reasoning;
 };
 
-const useStore = create<State>()((set, get) => ({
+const useStore = create<StoreState>()((set, get) => ({
   ...initialState,
 
   actions: {
     setReasoning: (value) =>
-      set((state) => ({
-        resoning: value !== undefined ? value : !state.resoning,
+      set(() => ({
+        reasoning: value,
+      })),
+    setStyle: (value) =>
+      set(() => ({
+        style: value,
+      })),
+    setDetailLevel: (value) =>
+      set(() => ({
+        detailLevel: value,
       })),
     setWebBrowsing: (value) =>
       set((state) => ({
         webBrowsing: value !== undefined ? value : !state.webBrowsing,
       })),
-    setModel: (model: Model) => set(() => ({ model })),
-    addFiles: (files: File[]) =>
+    setModel: (model) => set(() => ({ model })),
+    addFiles: (files) =>
       set((state) => ({
         files: [
           ...state.files,
@@ -70,15 +48,13 @@ const useStore = create<State>()((set, get) => ({
               file,
               name: file.name,
               size: file.size,
-              type: (fileTypes as readonly string[]).includes(type)
-                ? (type as FileType)
-                : "file",
+              type: type,
               preview: URL.createObjectURL(file),
             };
           }),
         ],
       })),
-    removeFile: (id: string) =>
+    removeFile: (id) =>
       set((state) => {
         const fileToRemove = state.files.find((f) => f.id === id);
         if (fileToRemove?.preview) {
@@ -95,7 +71,9 @@ export const useChatInputStore = () =>
   useStore(
     useShallow((state) => ({
       files: state.files,
-      resoning: state.resoning,
+      reasoning: state.reasoning,
+      detailLevel: state.detailLevel,
+      style: state.style,
       webBrowsing: state.webBrowsing,
       model: state.model,
       expanded: isExpanded(state),

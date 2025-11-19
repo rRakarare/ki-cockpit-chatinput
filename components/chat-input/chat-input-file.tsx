@@ -1,14 +1,16 @@
 import { motion } from "motion/react";
-import { useChatInputActions, type FileWithMetadata } from "@/lib/store";
+import { useChatInputActions } from "@/lib/store";
 import { Button } from "../ui/button";
 import { X } from "lucide-react";
 import {
+  ChatInputFileDefault,
   ChatInputFileDoc,
   ChatInputFileImage,
   ChatInputFilePdf,
   ChatInputFileTxt,
   ChatInputFileXlsx,
 } from "./chat-input-file-types";
+import type { FileWithMetadata } from "@/lib/store-types";
 
 function ChatInputFile({ file }: { file: FileWithMetadata }) {
   const { removeFile } = useChatInputActions();
@@ -39,10 +41,11 @@ function ChatInputFile({ file }: { file: FileWithMetadata }) {
               return <ChatInputFileTxt file={file} />;
             case "png":
             case "jpg":
+            case "svg":
               return <ChatInputFileImage file={file} />;
 
             default:
-              return null;
+              return <ChatInputFileDefault file={file} />;
           }
         })()}
       </div>

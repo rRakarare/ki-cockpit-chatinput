@@ -9,18 +9,18 @@ import {
 import { Tabs } from "./chat-input-settings";
 import { Dispatch, SetStateAction } from "react";
 import { cn } from "@/lib/utils";
-import { styleModes } from "@/lib/store-types";
+import { reasoningModes } from "@/lib/store-types";
 import { useChatInputActions, useChatInputStore } from "@/lib/store";
 
 interface Props {
   setTab: Dispatch<SetStateAction<Tabs>>;
 }
 
-function ChatInputSettingsStyle({ setTab }: Props) {
-  const { setStyle } = useChatInputActions();
-  const { style } = useChatInputStore();
+function ChatInputSettingsReasoning({ setTab }: Props) {
+  const { reasoning } = useChatInputStore();
+  const { setReasoning } = useChatInputActions();
 
-  console.log(style);
+  console.log(reasoning);
 
   return (
     <CommandGroup>
@@ -29,18 +29,18 @@ function ChatInputSettingsStyle({ setTab }: Props) {
         <span>zurück</span>
       </CommandItem>
 
-      {styleModes.map((item) => (
+      {reasoningModes.map((item) => (
         <CommandItem
           key={item}
-          onSelect={() => setStyle(item === style ? null : item)}
+          onSelect={() => setReasoning(item === reasoning ? null : item)}
         >
           <Pencil />
           <span>{item}</span>
-          {item === style && <Check className="ml-auto" />}
+          {item === reasoning && <Check className="ml-auto" />}
         </CommandItem>
       ))}
     </CommandGroup>
   );
 }
 
-export default ChatInputSettingsStyle;
+export default ChatInputSettingsReasoning;

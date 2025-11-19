@@ -2,7 +2,9 @@
 import { ArrowLeft, ArrowRight, Folder } from "lucide-react";
 
 import {
+  CommandEmpty,
   CommandGroup,
+  CommandInput,
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
@@ -29,32 +31,27 @@ const knowledgeList = [
 ];
 
 interface Props {
-  tab: Tabs;
-  searchValue: string;
   setTab: Dispatch<SetStateAction<Tabs>>;
 }
 
-function ChatInputSettingsKnowledge({ tab, setTab, searchValue }: Props) {
-  const showList = tab === "knowledge" || searchValue;
-  const showBack = tab === "knowledge";
-
+function ChatInputSettingsKnowledge({ setTab }: Props) {
   return (
-    <CommandList className={cn("hidden", showList && "inline")}>
-      <CommandGroup>
-        {showBack && (
-          <CommandItem onSelect={() => setTab("default")}>
-            <ArrowLeft />
-            <span>zurück</span>
-          </CommandItem>
-        )}
-        {knowledgeList.map((item) => (
-          <CommandItem key={item.id}>
-            <Folder />
-            <span>{item.name}</span>
-          </CommandItem>
-        ))}
-      </CommandGroup>
-    </CommandList>
+    <CommandGroup>
+      <CommandInput placeholder="Type a command or search..." />
+      <CommandEmpty>No results found.</CommandEmpty>
+
+      <CommandItem onSelect={() => setTab("default")}>
+        <ArrowLeft />
+        <span>zurück</span>
+      </CommandItem>
+
+      {knowledgeList.map((item) => (
+        <CommandItem key={item.id}>
+          <Folder />
+          <span>{item.name}</span>
+        </CommandItem>
+      ))}
+    </CommandGroup>
   );
 }
 

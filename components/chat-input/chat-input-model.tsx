@@ -9,8 +9,9 @@ import {
 import { ResponsivePopover } from "../responsive-popover";
 import { Button } from "../ui/button";
 import { Check, ChevronDown } from "lucide-react";
-import { models, useChatInputActions, useChatInputStore } from "@/lib/store";
+import { useChatInputActions, useChatInputStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
+import { models } from "@/lib/store-types";
 
 function ChatInputModel() {
   const { setModel } = useChatInputActions();

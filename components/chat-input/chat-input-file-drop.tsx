@@ -77,17 +77,13 @@ export default function ChatInputFileDrop() {
     };
   }, [addFiles]);
 
-  return (
-    <Dialog open={isDragging} onOpenChange={setIsDragging}>
-      <DialogContent className="[&>button]:hidden">
-        <DialogHeader className="items-center flex justify-center">
-          <DialogTitle className="flex items-center">
-            <File className="inline mr-2" />
-            Drop Files
-          </DialogTitle>
-          <DialogDescription>Drop files to add them to chat</DialogDescription>
-        </DialogHeader>
-      </DialogContent>
-    </Dialog>
-  );
+  if (isDragging) {
+    return (
+      <div className="absolute bg-red-500 w-full h-full top-0 left-0 z-30 flex items-center justify-center">
+        <span>Drop Files</span>
+      </div>
+    );
+  }
+
+  return null;
 }

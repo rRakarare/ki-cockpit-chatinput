@@ -1,19 +1,29 @@
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import type { FileWithMetadata } from "@/lib/store-types";
 
-import type { FileWithMetadata } from "@/lib/store";
 import { File, FileSpreadsheet, FileText, FileType } from "lucide-react";
+
+export function ChatInputFileDefault({ file }: { file: FileWithMetadata }) {
+  return (
+    <div className="flex gap-2 justify-between items-center h-full p-2">
+      <File className="shrink-0 size-8 border rounded-full bg-red-100 p-2" />
+      <div className="w-full">
+        <span className="line-clamp-1">{file.name}</span>
+        <span className="text-xs text-muted-foreground">{file.type}</span>
+      </div>
+    </div>
+  );
+}
 
 export function ChatInputFilePdf({ file }: { file: FileWithMetadata }) {
   return (
     <div className="flex gap-2 justify-between items-center h-full p-2">
-      <File className="shrink-0 size-8 border rounded-full bg-red-100 p-2" />
+      <File className="shrink-0 size-6 border rounded-md bg-red-100 p-1" />
       <div className="w-full">
         <span className="line-clamp-1">{file.name}</span>
         <span className="text-xs text-muted-foreground">{file.type}</span>
