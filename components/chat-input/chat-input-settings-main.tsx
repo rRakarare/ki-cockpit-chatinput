@@ -13,6 +13,7 @@ import { useChatInputActions, useChatInputStore } from "@/lib/store";
 import ChatInputFileUpload from "./chat-input-file-upload";
 import type { Tabs } from "./chat-input-settings";
 import type { Dispatch, SetStateAction } from "react";
+import ChatInputSketch from "./chat-input-sketch";
 
 interface Props {
   setTab: Dispatch<SetStateAction<Tabs>>;
@@ -26,6 +27,7 @@ function ChatInputSettingsMain({ setTab }: Props) {
     <>
       <CommandGroup>
         <ChatInputFileUpload />
+        <ChatInputSketch />
         <CommandItem onSelect={() => setTab("knowledge")}>
           <Folder />
           <span>Connect knowledge</span>
