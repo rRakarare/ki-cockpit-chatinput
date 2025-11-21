@@ -40,7 +40,9 @@ function ChatInputSettings() {
           {(() => {
             switch (tab) {
               case "default":
-                return <ChatInputSettingsMain setTab={setTab} />;
+                return (
+                  <ChatInputSettingsMain setTab={setTab} setOpen={setOpen} />
+                );
               case "knowledge":
                 return <ChatInputSettingsKnowledge setTab={setTab} />;
               case "style":

@@ -13,14 +13,19 @@ import {
   ReactSketchCanvas,
   type ReactSketchCanvasRef,
 } from "react-sketch-canvas";
-import { useRef } from "react";
+import { Dispatch, SetStateAction, useRef, useState } from "react";
 import { CommandItem } from "../ui/command";
-import { SquarePen } from "lucide-react";
+import { SquarePen, Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
 
-function ChatInputSketch() {
+interface Props {
+  setOpen: Dispatch<SetStateAction<boolean>>;
+}
+
+function ChatInputSketch({ setOpen }: Props) {
   const canvasRef = useRef<ReactSketchCanvasRef | null>(null);
   const { addFiles } = useChatInputActions();
+  const [openSketch, setOpenSketch] = useState(false);
 
   const handleExportToFile = async () => {
     if (canvasRef.current) {
@@ -48,14 +53,19 @@ function ChatInputSketch() {
 
         // 4. Pass to your addFiles function
         addFiles([file]);
+        setOpenSketch(false);
       } catch (error) {
         console.error("Export failed:", error);
       }
     }
   };
 
+  const handleResetClick = () => {
+    canvasRef.current?.resetCanvas();
+  };
+
   return (
-    <Dialog>
+    <Dialog open={openSketch} onOpenChange={setOpenSketch}>
       <DialogTrigger className="w-full">
         <CommandItem>
           <SquarePen />
@@ -70,13 +80,21 @@ function ChatInputSketch() {
           </DialogDescription>
         </DialogHeader>
 
-        <ReactSketchCanvas
-          ref={canvasRef}
-          width="100%"
-          height="350px"
-          canvasColor="transparent"
-          strokeColor="#000000"
-        />
+        <div className="flex flex-col gap-2">
+          <div className="border rounded-lg p-2">
+            <Button variant={"outline"} size={"sm"} onClick={handleResetClick}>
+              <Trash2 />
+            </Button>
+          </div>
+          <ReactSketchCanvas
+            ref={canvasRef}
+            className="!border-border !rounded-md"
+            width="100%"
+            height="350px"
+            canvasColor="transparent"
+            strokeColor="#000000"
+          />
+        </div>
         <Button onClick={handleExportToFile}>Done</Button>
       </DialogContent>
     </Dialog>

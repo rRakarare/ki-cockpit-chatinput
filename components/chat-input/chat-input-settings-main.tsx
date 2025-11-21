@@ -17,17 +17,18 @@ import ChatInputSketch from "./chat-input-sketch";
 
 interface Props {
   setTab: Dispatch<SetStateAction<Tabs>>;
+  setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-function ChatInputSettingsMain({ setTab }: Props) {
+function ChatInputSettingsMain({ setTab, setOpen }: Props) {
   const { setWebBrowsing } = useChatInputActions();
   const { webBrowsing } = useChatInputStore();
 
   return (
     <>
       <CommandGroup>
-        <ChatInputFileUpload />
-        <ChatInputSketch />
+        <ChatInputFileUpload setOpen={setOpen} />
+        <ChatInputSketch setOpen={setOpen} />
         <CommandItem onSelect={() => setTab("knowledge")}>
           <Folder />
           <span>Connect knowledge</span>
