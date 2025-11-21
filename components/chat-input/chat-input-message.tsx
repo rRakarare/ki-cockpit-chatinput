@@ -7,6 +7,26 @@ function ChatInputMessage() {
   const { expanded } = useChatInputStore();
   const { addFiles } = useChatInputActions();
 
+  const handlePaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
+    const items = e.clipboardData?.items;
+    if (!items) return;
+
+    const imageFiles: File[] = [];
+
+    for (const item of items) {
+      if (item.type.startsWith("image/")) {
+        const file = item.getAsFile();
+        if (file) {
+          imageFiles.push(file);
+        }
+      }
+    }
+
+    if (imageFiles.length > 0) {
+      addFiles(imageFiles);
+    }
+  };
+
   return (
     <motion.div
       layout="position"
@@ -18,6 +38,7 @@ function ChatInputMessage() {
         minRows={1}
         maxRows={9}
         placeholder="Was möchtest du wissen?"
+        onPaste={handlePaste}
       />
     </motion.div>
   );
