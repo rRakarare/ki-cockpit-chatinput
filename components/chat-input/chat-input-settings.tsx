@@ -10,8 +10,9 @@ import { useState } from "react";
 import ChatInputSettingsStyle from "./chat-input-settings-style";
 import { cn } from "@/lib/utils";
 import ChatInputSettingsReasoning from "./chat-input-settings-reasoning";
+import ChatInputSettingsDetailLevel from "./chat-input-settings-detaillevel";
 
-export type Tabs = "default" | "knowledge" | "style" | "reasoning";
+export type Tabs = "default" | "knowledge" | "style" | "reasoning" | "detail";
 
 function ChatInputSettings() {
   const [tab, setTab] = useState<Tabs>("default");
@@ -36,23 +37,23 @@ function ChatInputSettings() {
         align="start"
       >
         <Command className="">
-          <CommandList>
-            {(() => {
-              switch (tab) {
-                case "default":
-                  return <ChatInputSettingsMain setTab={setTab} />;
-                case "knowledge":
-                  return <ChatInputSettingsKnowledge setTab={setTab} />;
-                case "style":
-                  return <ChatInputSettingsStyle setTab={setTab} />;
-                case "reasoning":
-                  return <ChatInputSettingsReasoning setTab={setTab} />;
+          {(() => {
+            switch (tab) {
+              case "default":
+                return <ChatInputSettingsMain setTab={setTab} />;
+              case "knowledge":
+                return <ChatInputSettingsKnowledge setTab={setTab} />;
+              case "style":
+                return <ChatInputSettingsStyle setTab={setTab} />;
+              case "reasoning":
+                return <ChatInputSettingsReasoning setTab={setTab} />;
+              case "detail":
+                return <ChatInputSettingsDetailLevel setTab={setTab} />;
 
-                default:
-                  return null;
-              }
-            })()}
-          </CommandList>
+              default:
+                return null;
+            }
+          })()}
         </Command>
       </ResponsivePopover>
     </div>

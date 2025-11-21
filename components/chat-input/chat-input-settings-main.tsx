@@ -1,5 +1,5 @@
 "use client";
-import { ArrowRight, Folder, Globe, History, Pencil } from "lucide-react";
+import { ArrowRight, Eye, Folder, Globe, History, Pencil } from "lucide-react";
 
 import {
   CommandGroup,
@@ -19,13 +19,21 @@ interface Props {
 }
 
 function ChatInputSettingsMain({ setTab }: Props) {
-  const { setReasoning, setWebBrowsing } = useChatInputActions();
-  const { reasoning, webBrowsing } = useChatInputStore();
+  const { setWebBrowsing } = useChatInputActions();
+  const { webBrowsing } = useChatInputStore();
 
   return (
-    <CommandList>
+    <>
       <CommandGroup>
         <ChatInputFileUpload />
+        <CommandItem onSelect={() => setTab("knowledge")}>
+          <Folder />
+          <span>Connect knowledge</span>
+          <ArrowRight className="ml-auto" />
+        </CommandItem>
+      </CommandGroup>
+      <CommandSeparator />
+      <CommandGroup>
         <CommandItem onSelect={() => setTab("reasoning")}>
           <History />
           <span>Reasoning</span>
@@ -36,21 +44,18 @@ function ChatInputSettingsMain({ setTab }: Props) {
           <span>Web browsing</span>
           <Switch checked={webBrowsing} className="ml-auto" />
         </CommandItem>
-      </CommandGroup>
-      <CommandSeparator />
-      <CommandGroup>
-        <CommandItem onSelect={() => setTab("knowledge")}>
-          <Folder />
-          <span>Select project</span>
-          <ArrowRight className="ml-auto" />
-        </CommandItem>
         <CommandItem onSelect={() => setTab("style")}>
           <Pencil />
           <span>Select style</span>
           <ArrowRight className="ml-auto" />
         </CommandItem>
+        <CommandItem onSelect={() => setTab("detail")}>
+          <Eye />
+          <span>Select detail Level</span>
+          <ArrowRight className="ml-auto" />
+        </CommandItem>
       </CommandGroup>
-    </CommandList>
+    </>
   );
 }
 

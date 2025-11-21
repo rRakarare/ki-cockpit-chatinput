@@ -5,15 +5,20 @@ import type { StoreState } from "./store-types";
 
 export const initialState: Omit<StoreState, "actions"> = {
   files: [],
+  knowledge: null,
   reasoning: null,
   style: null,
-  detailLevel: null,
+  detailLevel: "balanced",
   webBrowsing: true,
   model: "gpt-5",
 };
 
 const isExpanded = (state: Omit<StoreState, "actions">): boolean => {
-  return state.reasoning !== initialState.reasoning;
+  return (
+    state.reasoning !== null ||
+    state.webBrowsing === true ||
+    state.knowledge !== null
+  );
 };
 
 const useStore = create<StoreState>()((set, get) => ({
@@ -37,6 +42,7 @@ const useStore = create<StoreState>()((set, get) => ({
         webBrowsing: value !== undefined ? value : !state.webBrowsing,
       })),
     setModel: (model) => set(() => ({ model })),
+    setKnowledge: (knowledge) => set(() => ({ knowledge })),
     addFiles: (files) =>
       set((state) => ({
         files: [
@@ -71,6 +77,7 @@ export const useChatInputStore = () =>
   useStore(
     useShallow((state) => ({
       files: state.files,
+      knowledge: state.knowledge,
       reasoning: state.reasoning,
       detailLevel: state.detailLevel,
       style: state.style,

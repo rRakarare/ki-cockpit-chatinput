@@ -1,13 +1,16 @@
 "use client";
-import { ArrowLeft, ArrowRight, Check, Folder, Pencil } from "lucide-react";
-
 import {
-  CommandGroup,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import { Tabs } from "./chat-input-settings";
-import { Dispatch, SetStateAction } from "react";
+  ArrowLeft,
+  Check,
+  Lightbulb,
+  Pencil,
+  PowerOff,
+  Zap,
+} from "lucide-react";
+
+import { CommandGroup, CommandItem } from "@/components/ui/command";
+import type { Tabs } from "./chat-input-settings";
+import type { Dispatch, SetStateAction } from "react";
 import { cn } from "@/lib/utils";
 import { reasoningModes } from "@/lib/store-types";
 import { useChatInputActions, useChatInputStore } from "@/lib/store";
@@ -29,16 +32,21 @@ function ChatInputSettingsReasoning({ setTab }: Props) {
         <span>zurück</span>
       </CommandItem>
 
-      {reasoningModes.map((item) => (
-        <CommandItem
-          key={item}
-          onSelect={() => setReasoning(item === reasoning ? null : item)}
-        >
-          <Pencil />
-          <span>{item}</span>
-          {item === reasoning && <Check className="ml-auto" />}
-        </CommandItem>
-      ))}
+      <CommandItem onSelect={() => setReasoning(null)}>
+        <PowerOff />
+        <span>No thinking</span>
+        {reasoning === null && <Check className="ml-auto" />}
+      </CommandItem>
+      <CommandItem onSelect={() => setReasoning("standard")}>
+        <Zap />
+        <span>Fast</span>
+        {reasoning === "standard" && <Check className="ml-auto" />}
+      </CommandItem>
+      <CommandItem onSelect={() => setReasoning("extended")}>
+        <Lightbulb />
+        <span>Detailed</span>
+        {reasoning === "extended" && <Check className="ml-auto" />}
+      </CommandItem>
     </CommandGroup>
   );
 }

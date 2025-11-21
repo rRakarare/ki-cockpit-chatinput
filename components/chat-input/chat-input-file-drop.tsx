@@ -1,89 +1,40 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { useChatInputActions } from "@/lib/store";
-import { File } from "lucide-react";
-
-import { useState, useEffect, useRef } from "react";
+import { cn } from "@/lib/utils";
+import { useGlobalDrag } from "@/hooks/use-global-drag";
+import { Upload } from "lucide-react";
+import { useCallback } from "react";
+import { useDropzone } from "react-dropzone";
 
 export default function ChatInputFileDrop() {
-  const [isDragging, setIsDragging] = useState<boolean>(false);
   const { addFiles } = useChatInputActions();
-  const dragCounter = useRef<number>(0);
+  const { isGlobalDrag, resetDragState } = useGlobalDrag();
 
-  useEffect(() => {
-    const handleDragEnter = (e: DragEvent): void => {
-      e.preventDefault();
-      e.stopPropagation();
-      dragCounter.current++;
-      setIsDragging(true);
-    };
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      addFiles(acceptedFiles);
+      resetDragState();
+    },
+    [addFiles, resetDragState],
+  );
 
-    const handleDragLeave = (e: DragEvent): void => {
-      e.preventDefault();
-      e.stopPropagation();
-      dragCounter.current--;
-      if (dragCounter.current === 0) {
-        setIsDragging(false);
-      }
-    };
+  const { getRootProps, isDragAccept } = useDropzone({ onDrop });
 
-    const handleDragOver = (e: DragEvent): void => {
-      e.preventDefault();
-      e.stopPropagation();
-    };
-
-    const handleDrop = (e: DragEvent): void => {
-      e.preventDefault();
-      e.stopPropagation();
-      dragCounter.current = 0;
-      setIsDragging(false);
-
-      const files: File[] = e.dataTransfer
-        ? Array.from(e.dataTransfer.files)
-        : [];
-      addFiles(files);
-    };
-
-    document.body.addEventListener(
-      "dragenter",
-      handleDragEnter as EventListener,
-    );
-    document.body.addEventListener(
-      "dragleave",
-      handleDragLeave as EventListener,
-    );
-    document.body.addEventListener("dragover", handleDragOver as EventListener);
-    document.body.addEventListener("drop", handleDrop as EventListener);
-
-    return () => {
-      document.body.removeEventListener(
-        "dragenter",
-        handleDragEnter as EventListener,
-      );
-      document.body.removeEventListener(
-        "dragleave",
-        handleDragLeave as EventListener,
-      );
-      document.body.removeEventListener(
-        "dragover",
-        handleDragOver as EventListener,
-      );
-      document.body.removeEventListener("drop", handleDrop as EventListener);
-    };
-  }, [addFiles]);
-
-  if (isDragging) {
-    return (
-      <div className="absolute bg-red-500 w-full h-full top-0 left-0 z-30 flex items-center justify-center">
-        <span>Drop Files</span>
-      </div>
-    );
+  if (!isGlobalDrag) {
+    return null;
   }
 
-  return null;
+  return (
+    <div
+      {...getRootProps()}
+      className={cn(
+        "absolute inset-0 z-50 flex items-center justify-center border-2 border-dashed rounded-3xl bg-background/30 backdrop-blur-xs duration-300",
+        isDragAccept && "border-primary ",
+      )}
+    >
+      <div className="flex items-center gap-2 pointer-events-none">
+        <Upload className="size-4" />
+        <span className="">Drop files here</span>
+      </div>
+    </div>
+  );
 }

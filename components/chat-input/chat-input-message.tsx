@@ -1,10 +1,11 @@
 import { motion } from "motion/react";
 import { TextareaAutosize } from "../ui/textarea";
 import { cn } from "@/lib/utils";
-import { useChatInputStore } from "@/lib/store";
+import { useChatInputActions, useChatInputStore } from "@/lib/store";
 
 function ChatInputMessage() {
   const { expanded } = useChatInputStore();
+  const { addFiles } = useChatInputActions();
 
   return (
     <motion.div

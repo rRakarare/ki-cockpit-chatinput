@@ -1,5 +1,12 @@
 "use client";
-import { ArrowLeft, ArrowRight, Check, Folder, Pencil } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Check,
+  Folder,
+  Pencil,
+  PencilOff,
+} from "lucide-react";
 
 import {
   CommandGroup,
@@ -20,8 +27,6 @@ function ChatInputSettingsStyle({ setTab }: Props) {
   const { setStyle } = useChatInputActions();
   const { style } = useChatInputStore();
 
-  console.log(style);
-
   return (
     <CommandGroup>
       <CommandItem onSelect={() => setTab("default")}>
@@ -29,16 +34,21 @@ function ChatInputSettingsStyle({ setTab }: Props) {
         <span>zurück</span>
       </CommandItem>
 
-      {styleModes.map((item) => (
-        <CommandItem
-          key={item}
-          onSelect={() => setStyle(item === style ? null : item)}
-        >
-          <Pencil />
-          <span>{item}</span>
-          {item === style && <Check className="ml-auto" />}
-        </CommandItem>
-      ))}
+      <CommandItem onSelect={() => setStyle(null)}>
+        <Pencil />
+        <span>{"Standard"}</span>
+        {style === null && <Check className="ml-auto" />}
+      </CommandItem>
+      <CommandItem onSelect={() => setStyle("analytical")}>
+        <Pencil />
+        <span>{"Analytical"}</span>
+        {style === "analytical" && <Check className="ml-auto" />}
+      </CommandItem>
+      <CommandItem onSelect={() => setStyle("creative")}>
+        <Pencil />
+        <span>{"Creative"}</span>
+        {style === "creative" && <Check className="ml-auto" />}
+      </CommandItem>
     </CommandGroup>
   );
 }
